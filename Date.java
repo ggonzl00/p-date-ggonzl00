@@ -8,14 +8,22 @@ public class Date {
 		this.day = day;
 		this.month = month;
 		this.year = year;
-	}
-	//ACABAR EL CONSTRUCTOR!!!!
-	public Date (int year){  //genera aleatoriamente el day y el mes 
-		/*this.year = year;
-		this.month = // ramdon x(1-12)
-		if(dependiendo del mes, que lo hago entre X dias){
-		this.day = random
+		/*if(day < 1 || day > 31){
+			throw new DateException ("El dia " + day +" no valido.Valores posibles entre 1 y 31");
+		}else{
+			this.day = day;
+		}
+		if(month < 1 || month > 12){
+			throw new DateException ("El mes " + month +" no valido.Valores posibles entre 1 y 12");
+		}else{
+			this.month = month;
 		}*/
+	}
+	
+	public Date (int year){  //genera aleatoriamente el day y el mes 
+		this.year = year;
+		this.month =  (int) ((Math.random() * 12) + 1);
+		this.day = (int) ((Math.random() * this.getNumberDaysMonth()) + 1);
 	}
 	
 	public int getDay(){
@@ -24,7 +32,7 @@ public class Date {
 	
 	public void setDay(int valor){
 		day = valor;
-		//System.out.println(day);
+		
 	}
 	
 	public int getMonth(){
@@ -76,56 +84,33 @@ public class Date {
 	
 				/*--------------------------*/
 	
-	private String nameMonth(int month){  //POR QUE NO RECIBE NADA??
-		String nombre = "Error no existe";
+	private String nameMonth(int month){ 
+		String nombre = "Error, no existe";
 		switch (this.month){
 		case 1: nombre = "Enero";
-			//System.out.println(nombre);
-			return nombre;
-			//break;
+			break;
 		case 2: nombre = "Febrero";
-			//System.out.println("Febrero");
-			return nombre;
-			//break;
+			break;
 		case 3: nombre = "Marzo";
-			return nombre;
-			//System.out.println("Marzo");
-			//break;
+			break;
 		case 4: nombre = "Abril";
-			return nombre;
-			//System.out.println("Abril");
-			//break;
+			break;
 		case 5: nombre = "Mayo";
-			//System.out.println("Mayo");
-			//break;
+			break;
 		case 6: nombre = "Junio";
-			return nombre;
-			//System.out.println("Junio");
-			//break;
+			break;
 		case 7: nombre = "Julio";
-			return nombre;
-			//System.out.println("Julio");
-			//break;
+			break;
 		case 8: nombre = "Agosto";
-			return nombre;
-			//System.out.println("Agosto");
-			//break;
+			break;
 		case 9: nombre = "Septiembre";
-			return nombre;
-			//System.out.println("Septiembre");
-			//break;
+			break;
 		case 10: nombre = "Octubre";
-			return nombre;
-			//System.out.println("Octubre");
-			//break;
+			break;
 		case 11: nombre = "Noviembre";
-			return nombre;
-			//System.out.println("Noviembre");
-			//break;
+			break;
 		case 12: nombre = "Diciembre";
-			return nombre;
-			 //System.out.println("Diciembre");
-			//break;
+			break;
 		}
 		return nombre;
 	}
@@ -136,24 +121,7 @@ public class Date {
 
 	public boolean isDayValid(){
 		int maxDay = 0;
-		switch (this.month){
-		case 1:
-		case 3:
-		case 5:
-		case 7:
-		case 8:
-		case 10:
-		case 12: maxDay = 31;
-			break;
-		case 4:
-		case 6:
-		case 9:
-		case 11: maxDay = 30;
-			break;
-		case 2: maxDay = 28;
-			break;
-		}
-		if(this.day > maxDay || this.day <= 0){
+		if(this.day > this.getNumberDaysMonth(this.month) || this.day <= 0){
 			return false;
 		}else{
 			return true;
@@ -162,30 +130,49 @@ public class Date {
 	
 	
 	
-	public void nameSeason(){
-		
+	public String nameSeason(){
+		String season = "Error, no existe";
 		switch(this.month){
 		case 1:
 		case 2:
-		case 3: System.out.println("Invierno");
+		case 3: season = "Invierno";
 			break;
 		case 4:
 		case 5:
-		case 6: System.out.println("Primavera");
+		case 6: season = "Primavera";
 			break;
 		case 7:
 		case 8:
-		case 9: System.out.println("Verano");
+		case 9: season = "Verano";
 			break;
 		case 10:
 		case 11:
-		case 12: System.out.println("Otoño");
+		case 12: season = "Otoño";
 			break;
-		default: System.out.println("Error mes no existe");
 		}
+		return season;
 	}
 	
 				/*--------------------------*/
+
+
+	public String monthLeftUntilLastMonthOfYear(){
+		StringBuilder cad= new StringBuilder();
+		for(int i=this.month; i<=12; i++){
+			cad.append(this.nameMonth(i));
+		}
+		return cad.toString();
+	}
+	
+	public String allDatesUntilEndMonth(){
+		StringBuilder cad= new StringBuilder();
+		Date fecha;
+		for(int i = this.day; i < this.getNumberDaysMonth(); i++){
+		fecha = new Date (i, this.month, this.year);
+		cad.append(fecha.toString());		
+		}
+		return cad.toString();
+	}
 
 
 	private int getNumberDaysMonth(int month){
@@ -218,15 +205,14 @@ public class Date {
 		return this.getNumberDaysMonth(this.month);
 	}
 
-	
 	public String monthsSameAmountDays(){
-		String cad= "Error";
+		StringBuilder cad= new StringBuilder();
 		for(int i=1; i<=12; i++){
 			if(this.getNumberDaysMonth(i) == this.getNumberDaysMonth()){
-				return this.nameMonth(i);
+				cad.append(this.nameMonth(i));
 			}
 		}
-		return cad;
+		return cad.toString();
 	}
 	
 	public int countDaySinceFirstDayYear (){
@@ -254,6 +240,12 @@ public class Date {
 			}
 		}
 		return counter;
+	}
+
+	public String toString() {
+		
+		return this.day + "/" + this.month + "/" + this.year;
+		
 	}
 	
 }

@@ -10,6 +10,7 @@ public class MainDate{
 		System.out.println(today.isSame(yesterday));
 		System.out.println(yesterday.nameMonth());
 		System.out.println(today.monthsSameAmountDays());
-		System.out.println();
+		System.out.println(today.monthLeftUntilLastMonthOfYear());
+		System.out.println(today.monthsSameAmountDays());
 }
 }
