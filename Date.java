@@ -168,8 +168,8 @@ public class Date {
 		StringBuilder cad= new StringBuilder();
 		Date fecha;
 		for(int i = this.day; i < this.getNumberDaysMonth(); i++){
-		fecha = new Date (i, this.month, this.year);
-		cad.append(fecha.toString());		
+			fecha = new Date (i, this.month, this.year);
+			cad.append(fecha.toString());		
 		}
 		return cad.toString();
 	}
