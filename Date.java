@@ -1,3 +1,5 @@
+package fecha;
+
 public class Date {
 
 	private int day;
@@ -20,10 +22,10 @@ public class Date {
 		}*/
 	}
 	
-	public Date (int year){  //genera aleatoriamente el day y el mes 
+	public Date (int year){  //genera aleatoriamente el dia y el mes 
 		this.year = year;
 		this.month =  (int) ((Math.random() * 12) + 1);
-		this.day = (int) ((Math.random() * this.getNumberDaysMonth()) + 1);
+		this.day = (int) ((Math.random() * this.getNumberDaysMonth(this.month)) + 1);
 	}
 	
 	public int getDay(){
@@ -86,7 +88,7 @@ public class Date {
 	
 	private String nameMonth(int month){ 
 		String nombre = "Error, no existe";
-		switch (this.month){
+		switch (month){
 		case 1: nombre = "Enero";
 			break;
 		case 2: nombre = "Febrero";
@@ -120,7 +122,6 @@ public class Date {
 	}
 
 	public boolean isDayValid(){
-		int maxDay = 0;
 		if(this.day > this.getNumberDaysMonth(this.month) || this.day <= 0){
 			return false;
 		}else{
@@ -132,7 +133,7 @@ public class Date {
 	
 	public String nameSeason(){
 		String season = "Error, no existe";
-		switch(this.month){
+		switch(month){
 		case 1:
 		case 2:
 		case 3: season = "Invierno";
@@ -160,6 +161,7 @@ public class Date {
 		StringBuilder cad= new StringBuilder();
 		for(int i=this.month; i<=12; i++){
 			cad.append(this.nameMonth(i));
+			cad.append(" ");
 		}
 		return cad.toString();
 	}
@@ -169,7 +171,8 @@ public class Date {
 		Date fecha;
 		for(int i = this.day; i < this.getNumberDaysMonth(); i++){
 			fecha = new Date (i, this.month, this.year);
-			cad.append(fecha.toString());		
+			cad.append(fecha.toString());	
+			cad.append(" ");
 		}
 		return cad.toString();
 	}
@@ -177,7 +180,7 @@ public class Date {
 
 	private int getNumberDaysMonth(int month){
 		int numDay = 0;
-		switch(this.month){
+		switch(month){
 		case 1:
 		case 3:
 		case 5:
@@ -188,6 +191,7 @@ public class Date {
 			break;
 		case 4:
 		case 6:
+		case 9:
 		case 11: numDay = 30;
 			break;
 		case 2: numDay = 28;
@@ -210,12 +214,13 @@ public class Date {
 		for(int i=1; i<=12; i++){
 			if(this.getNumberDaysMonth(i) == this.getNumberDaysMonth()){
 				cad.append(this.nameMonth(i));
+				cad.append(" ");
 			}
 		}
 		return cad.toString();
 	}
 	
-	public int countDaySinceFirstDayYear (){
+	public int countDaySinceFirstDayYear(){
 		int counter = this.day;
 		for(int i=1; i<this.month; i++){
 			counter = counter + getNumberDaysMonth(i);    //counter += getNumDaysMonth(i); 
@@ -232,20 +237,42 @@ public class Date {
 		boolean end = false;
 		Date randomDate;
 		
-		while(! end){
+		do{
 			randomDate = new Date(this.year);  //como solo tiene el parametro year, usaria el constructor que tiene un solo parametro
 			counter ++;
-			if(this.equals(randomDate)){
+			if(this.equals(randomDate)){ 
 				end = true;
 			}
-		}
+		} while(! end);
 		return counter;
 	}
 
 	public String toString() {
+		String dia="";
+		if (this.day>9) {
+			dia=""+this.day;
+		} else {
+			dia="0"+this.day;
+		}
 		
-		return this.day + "/" + this.month + "/" + this.year;
+		String mes="";
+		if (this.month>9) {
+			mes=""+this.month;
+		} else {
+			mes="0"+this.month;
+		}
 		
+		return dia + "/" + mes + "/" + this.year;
+		
+	}
+	
+	public boolean equals(Date otherDate) {
+		boolean retorno = false;
+		if(this.day == otherDate.getDay() && this.month == otherDate.getMonth()
+				&& this.year == otherDate.getYear()){
+			retorno = true;
+		}
+		return retorno;
 	}
 	
 }
